@@ -27,3 +27,11 @@ function getCoursNameToDeleteBD($idCours){
     $res = $stmt->fetch(PDO::FETCH_ASSOC);
     return $res['monCours'];
 }
+
+function deleteCoursBD($idCours){
+    $pdo = MonPDO::getPDO();
+    $req = 'DELETE FROM cours WHERE idCours = :cours';
+    $stmt = $pdo->prepare($req);
+    $stmt->bindValue(":cours", $idCours,PDO::PARAM_INT);
+    return $stmt->execute();
+}

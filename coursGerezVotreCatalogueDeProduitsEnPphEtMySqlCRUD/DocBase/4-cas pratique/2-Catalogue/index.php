@@ -17,6 +17,25 @@ if(isset($_GET['type']) && $_GET['type'] === "suppression") {
 <?php
 }
 
+if(isset($_GET['delete'])){
+    $success = deleteCoursBD($_GET['delete']);
+    if($success){ ?>
+        <div class="alert alert-success" role="alert">
+            La suppression s'est bien déroulée !
+        </div>
+    <?php } else { ?>
+        <div class="alert alert-danger" role="alert">
+            La suppression n' pas fonctionnée !
+        </div>
+    <?php }
+    ?>
+    <div class="alert alert-warning" role="alert">
+        Voulez vous vraiment <b class="text-danger">supprimer</b> l'élément <b> <?= $coursNameToDelete ?></b> de la bd ? 
+        <a href="?delete=<?=$_GET['idCours'] ?>"  class="btn btn-danger">Supprimer ! </a>
+        <a href="index.php"  class="btn btn-success">Annuler ! </a>
+    </div>
+<?php
+}
 
 $cours = getCoursBD();
 ?>
