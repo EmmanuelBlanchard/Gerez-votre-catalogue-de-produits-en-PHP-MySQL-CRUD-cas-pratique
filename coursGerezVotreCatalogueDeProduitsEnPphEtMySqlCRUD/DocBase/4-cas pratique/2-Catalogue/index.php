@@ -99,7 +99,7 @@ $cours = getCoursBD();
                                 <input type="submit" value="Valider" class="btn btn-success">
                             </div>
                             <div class="col text-center">
-                                <input type="submit" value="Annuler" class="btn btn-danger">
+                                <input type="submit" value="Annuler" onclick="cancelModification(event)"  class="btn btn-danger">
                             </div>
                         </div>
                     </form>
@@ -108,6 +108,8 @@ $cours = getCoursBD();
         </div>
     <?php endforeach; ?>
 </div>
+
+<script src="monJS.js"></script>
 
 <?php
 /************************
