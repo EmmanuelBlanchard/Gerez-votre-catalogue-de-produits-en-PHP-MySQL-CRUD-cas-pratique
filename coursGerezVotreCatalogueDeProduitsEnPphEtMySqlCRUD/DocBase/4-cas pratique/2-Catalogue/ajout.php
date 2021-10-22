@@ -12,7 +12,7 @@ if(isset($_POST['libelle'])) {
     $repertoire = "source/";
     try {
         $nomImage = ajoutImage($fileImage,$repertoire,$_POST['libelle']);
-        $success =  ajouterCoursBD($_POST['libelle'],$_POST['description'],$_POST['idType'],$nomImage);
+        $success = ajouterCoursBD($_POST['libelle'],$_POST['description'],$_POST['idType'],$nomImage);
         if($success) { ?>
             <div class="alert alert-success" role="alert">
                 L'ajout s'est bien déroulé !
@@ -29,7 +29,6 @@ if(isset($_POST['libelle'])) {
 
 $types = getTypesBD();
 ?>
-
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label>Nom : </label>
@@ -40,7 +39,7 @@ $types = getTypesBD();
         <textarea class="form-control" name="description" rows="3" required></textarea>
     </div>
     <div class="form-group">
-        <label>Types de cours : </label>
+        <label>Type de cours : </label>
         <select name="idType" class="form-control" id="">
             <?php foreach($types as $type){ ?>
                 <option value="<?= $type['idType'] ?>"><?= $type['libelle'] ?></option>
@@ -49,7 +48,7 @@ $types = getTypesBD();
     </div>
     <div class="form-group">
        <label>Image du cours : </label>
-       <input type="file" class="form-control-file" name="imageCours" />
+       <input type="file" class="form-control-file" name="imageCours" >
     </div>
     <input type="submit" class="btn btn-primary" value="Valider" />
 </form>

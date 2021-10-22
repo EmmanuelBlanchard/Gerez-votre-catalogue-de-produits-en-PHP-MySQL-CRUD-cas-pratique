@@ -22,6 +22,6 @@ function ajoutImage($file, $dir, $nom){
     else return ($nom . "_". $file['name']);
 }
 
-function deleteImage($folder,$nom) {
+function deleteImage($folder,$nom){
     unlink($folder.$nom);
 }

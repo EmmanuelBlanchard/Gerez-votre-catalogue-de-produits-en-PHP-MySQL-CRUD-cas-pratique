@@ -44,21 +44,26 @@ function deleteCoursBD($idCours){
     return $stmt->execute();
 }
 
-function modifierCoursBD($idCours,$libelle,$description,$idType){
+function modifierCoursBD($idCours,$libelle,$description,$idType,$nomImage){
     $pdo = MonPDO::getPDO();
-    $req = 'UPDATE cours SET libelle = :libelle, description = :desc, idType = :idType WHERE idCours = :cours';
+    $req = '
+    UPDATE cours 
+    SET libelle = :libelle, description = :desc, idType = :idType'; 
+    if($nomImage !== "")  $req .=', image=:image ';
+    $req .=' WHERE idCours = :cours';
     $stmt = $pdo->prepare($req);
     $stmt->bindValue(":cours", $idCours,PDO::PARAM_INT);
     $stmt->bindValue(":libelle", $libelle,PDO::PARAM_STR);
     $stmt->bindValue(":desc", $description,PDO::PARAM_STR);
     $stmt->bindValue(":idType", $idType,PDO::PARAM_INT);
+    if($nomImage !== "") $stmt->bindValue(":image", $nomImage,PDO::PARAM_STR);
     return $stmt->execute();
 }
 
 function ajouterCoursBD($libelle,$description,$idType,$image){
     $pdo = MonPDO::getPDO();
     $req = 'INSERT INTO cours (libelle,description,image,idType)
-    values(:libelle,:description,:image,:type)';
+    values(:libelle,:description,:image, :type)';
     $stmt = $pdo->prepare($req);
     $stmt->bindValue(":libelle", $libelle,PDO::PARAM_STR);
     $stmt->bindValue(":description", $description,PDO::PARAM_STR);

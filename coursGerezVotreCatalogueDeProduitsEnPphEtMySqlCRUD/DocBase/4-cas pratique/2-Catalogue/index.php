@@ -38,7 +38,19 @@ if (isset($_GET['delete'])) {
 
 //MODIFICATION
 if(isset($_POST['type']) && $_POST['type'] === "modificationEtape2"){
-    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours'], (int)$_POST['idType']);
+    $nomNouvelleImage = "";
+    if ($_FILES['imageCours']['name']  !== "") {
+        $imageToDelete = getImageToDelete($_POST['idCours']);
+        deleteImage("source/", $imageToDelete);
+        $fileImage = $_FILES['imageCours'];
+        $repertoire = "source/";
+        try {
+            $nomNouvelleImage = ajoutImage($fileImage,$repertoire,$_POST['nomCours']);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours'], (int)$_POST['idType'], $nomNouvelleImage);
     if($success) { ?>
         <div class="alert alert-success" role="alert">
             La modification s'est bien déroulée !
@@ -80,11 +92,15 @@ $types = getTypesBD();
                         </form>
                     </div>
                 <?php } else { ?>
-                    <form action="" method="post">
+                    <form action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="type" value="modificationEtape2">
                         <input type="hidden" name="idCours" value="<?= $c['idCours'] ?>">
-                        <img src="source/<?= $c['image'] ?>" class="card-img-top" alt="...">
+                            <img src="source/<?= $c['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body">
+                            <div class="form-group">
+                                <label>Image du cours : </label>
+                                <input type="file" class="form-control-file" name="imageCours" />
+                            </div>
                             <div class="form-group">
                                 <label>Nom du cours</label>
                                 <input type="text" class="form-control" name="nomCours" value="<?= $c['libelle'] ?>">
