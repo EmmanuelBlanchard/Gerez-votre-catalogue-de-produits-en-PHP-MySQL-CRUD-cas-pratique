@@ -17,3 +17,13 @@ function getNomType($idType){
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+function getCoursNameToDeleteBD($idCours){
+    $pdo = MonPDO::getPDO();
+    $req = 'SELECT CONCAT(idCours, " : ",libelle) as monCours FROM cours WHERE idCours = :cours';
+    $stmt = $pdo->prepare($req);
+    $stmt->bindValue(":cours", $idCours,PDO::PARAM_INT);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $res['monCours'];
+}
