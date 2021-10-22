@@ -34,8 +34,8 @@ if (isset($_GET['delete'])) {
 
 //MODIFICATION
 if(isset($_POST['type']) && $_POST['type'] === "modificationEtape2"){
-    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours'], $_POST['idType']);
-    if ($success) { ?>
+    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours'], (int)$_POST['idType']);
+    if($success) { ?>
         <div class="alert alert-success" role="alert">
             La modification s'est bien déroulée !
         </div>

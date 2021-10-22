@@ -54,3 +54,15 @@ function modifierCoursBD($idCours,$libelle,$description,$idType){
     $stmt->bindValue(":idType", $idType,PDO::PARAM_INT);
     return $stmt->execute();
 }
+
+function ajouterCoursBD($libelle,$description,$idType,$image){
+    $pdo = MonPDO::getPDO();
+    $req = 'INSERT INTO cours (libelle,description,image,idType)
+    values(:libelle,:description,:image,:type)';
+    $stmt = $pdo->prepare($req);
+    $stmt->bindValue(":libelle", $libelle,PDO::PARAM_STR);
+    $stmt->bindValue(":description", $description,PDO::PARAM_STR);
+    $stmt->bindValue(":image", $image,PDO::PARAM_STR);
+    $stmt->bindValue(":type", $idType,PDO::PARAM_INT);
+    return $stmt->execute();
+}
