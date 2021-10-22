@@ -5,24 +5,32 @@ $titre = "Page d'ajout d'un produit"; //Mettre le nom du titre de la page que vo
 <!-- mettre ici le code -->
 <?php
 require_once("catalogue.dao.php");
+require_once("gestionImage.php");
 
 if(isset($_POST['libelle'])) {
-    $success =  ajouterCoursBD($_POST['libelle'],$_POST['description'],$_POST['idType'],"nomCours.png");
-    if($success) { ?>
-        <div class="alert alert-success" role="alert">
-            L'ajout s'est bien déroulé !
-        </div>
-    <?php } else { ?>
-        <div class="alert alert-danger" role="alert">
-            L'ajout n'a pas fonctionné !
-        </div>
-    <?php }
+    $fileImage = $_FILES['imageCours'];
+    $repertoire = "source/";
+    try {
+        $nomImage = ajoutImage($fileImage,$repertoire,$_POST['libelle']);
+        $success =  ajouterCoursBD($_POST['libelle'],$_POST['description'],$_POST['idType'],$nomImage);
+        if($success) { ?>
+            <div class="alert alert-success" role="alert">
+                L'ajout s'est bien déroulé !
+            </div>
+        <?php } else { ?>
+            <div class="alert alert-danger" role="alert">
+                L'ajout n'a pas fonctionné !
+            </div>
+        <?php }
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 $types = getTypesBD();
 ?>
 
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label>Nom : </label>
         <input type="text" class="form-control" name="libelle" placeholder="Nom du cours" required />
@@ -45,9 +53,6 @@ $types = getTypesBD();
     </div>
     <input type="submit" class="btn btn-primary" value="Valider" />
 </form>
-
-
-
 
 <?php
 /************************
