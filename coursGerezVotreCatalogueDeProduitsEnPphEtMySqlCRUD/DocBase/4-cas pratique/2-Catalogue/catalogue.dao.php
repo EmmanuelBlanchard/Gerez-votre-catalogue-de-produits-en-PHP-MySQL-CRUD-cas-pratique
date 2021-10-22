@@ -35,3 +35,13 @@ function deleteCoursBD($idCours){
     $stmt->bindValue(":cours", $idCours,PDO::PARAM_INT);
     return $stmt->execute();
 }
+
+function modifierCoursBD($idCours,$libelle,$description){
+    $pdo = MonPDO::getPDO();
+    $req = 'UPDATE cours SET libelle = :libelle, description = :desc WHERE idCours = :cours';
+    $stmt = $pdo->prepare($req);
+    $stmt->bindValue(":cours", $idCours,PDO::PARAM_INT);
+    $stmt->bindValue(":libelle", $libelle,PDO::PARAM_STR);
+    $stmt->bindValue(":desc", $description,PDO::PARAM_STR);
+    return $stmt->execute();
+}

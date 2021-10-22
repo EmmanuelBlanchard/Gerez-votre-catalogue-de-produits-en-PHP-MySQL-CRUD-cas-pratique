@@ -6,6 +6,7 @@ $titre = "Un catalogue de produits"; //Mettre le nom du titre de la page que vou
 <?php
 require_once("catalogue.dao.php");
 
+//VERIFICATION DE SUPPRESSION
 if(isset($_GET['type']) && $_GET['type'] === "suppression") {
     $coursNameToDelete = getCoursNameToDeleteBD($_GET['idCours']);
     ?>
@@ -17,25 +18,34 @@ if(isset($_GET['type']) && $_GET['type'] === "suppression") {
 <?php
 }
 
-if(isset($_GET['delete'])){
+//SUPPRESSION
+if (isset($_GET['delete'])) {
     $success = deleteCoursBD($_GET['delete']);
-    if($success){ ?>
+    if ($success) { ?>
         <div class="alert alert-success" role="alert">
             La suppression s'est bien déroulée !
         </div>
     <?php } else { ?>
         <div class="alert alert-danger" role="alert">
-            La suppression n' pas fonctionnée !
+            La suppression n'a pas fonctionnée !
         </div>
     <?php }
-    ?>
-    <div class="alert alert-warning" role="alert">
-        Voulez vous vraiment <b class="text-danger">supprimer</b> l'élément <b> <?= $coursNameToDelete ?></b> de la bd ? 
-        <a href="?delete=<?=$_GET['idCours'] ?>"  class="btn btn-danger">Supprimer ! </a>
-        <a href="index.php"  class="btn btn-success">Annuler ! </a>
-    </div>
-<?php
 }
+
+//MODIFICATION
+if(isset($_POST['type']) && $_POST['type'] === "modificationEtape2"){
+    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours']);
+    if ($success) { ?>
+        <div class="alert alert-success" role="alert">
+            La modification s'est bien déroulée !
+        </div>
+    <?php } else { ?>
+        <div class="alert alert-danger" role="alert">
+            La modification n'a pas fonctionnée !
+        </div>
+    <?php }
+}
+
 
 $cours = getCoursBD();
 ?>
@@ -67,6 +77,8 @@ $cours = getCoursBD();
                     </div>
                 <?php } else { ?>
                     <form action="" method="post">
+                        <input type="hidden" name="type" value="modificationEtape2">
+                        <input type="hidden" name="idCours" value="<?= $c['idCours'] ?>">
                         <img src="source/<?= $c['image'] ?>" class="card-img-top" alt="...">
                         <div class="card-body">
                             <div class="form-group">
