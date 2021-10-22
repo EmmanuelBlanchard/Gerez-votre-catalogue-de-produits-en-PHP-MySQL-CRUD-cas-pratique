@@ -5,6 +5,7 @@ $titre = "Un catalogue de produits"; //Mettre le nom du titre de la page que vou
 <!-- mettre ici le code -->
 <?php
 require_once("catalogue.dao.php");
+require_once("gestionImage.php");
 
 //VERIFICATION DE SUPPRESSION
 if(isset($_GET['type']) && $_GET['type'] === "suppression") {
@@ -20,6 +21,9 @@ if(isset($_GET['type']) && $_GET['type'] === "suppression") {
 
 //SUPPRESSION
 if (isset($_GET['delete'])) {
+    $imageToDelete = getImageToDelete($_GET['delete']);
+    deleteImage("source/",$imageToDelete);
+
     $success = deleteCoursBD($_GET['delete']);
     if ($success) { ?>
         <div class="alert alert-success" role="alert">

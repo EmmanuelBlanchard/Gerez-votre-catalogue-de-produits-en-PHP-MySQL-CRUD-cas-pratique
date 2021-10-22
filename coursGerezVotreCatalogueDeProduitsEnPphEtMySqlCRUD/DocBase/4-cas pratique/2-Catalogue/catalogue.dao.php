@@ -66,3 +66,13 @@ function ajouterCoursBD($libelle,$description,$idType,$image){
     $stmt->bindValue(":type", $idType,PDO::PARAM_INT);
     return $stmt->execute();
 }
+
+function getImageToDelete($idCours){
+    $pdo = MonPDO::getPDO();
+    $req = 'SELECT image FROM cours WHERE idCours = :cours';
+    $stmt = $pdo->prepare($req);
+    $stmt->bindValue(":cours", $idCours,PDO::PARAM_INT);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $res['image'];
+}
