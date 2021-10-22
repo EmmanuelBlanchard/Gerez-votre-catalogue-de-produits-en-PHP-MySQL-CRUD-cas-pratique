@@ -45,25 +45,53 @@ $cours = getCoursBD();
     <?php foreach($cours as $c) : ?>
         <div class="col-4">
             <div class="card m-2" style="">
-                <img src="source/<?= $c['image'] ?>" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><?= $c['libelle'] ?></h5>
-                    <p class="card-text"><?= $c['description'] ?></p>
-                    <?php $typeTxt = getNomType($c['idType']);?>
-                    <span class='badge badge-primary'><?= $typeTxt['libelle'] ?></span>
-                </div>
-                <div class="row no-gutters p-2">
-                    <form action="" method="get" class="col-6 text-center">
-                        <input type="hidden" name="idCours" value="<?= $c['idCours'] ?>">
-                        <input type="hidden" name="type" value="modification">
-                        <input type="submit" value="modifier" class="btn btn-primary">
+                <?php if(!isset($_GET['type']) || $_GET['type'] !== "modification" || $_GET['idCours'] !== $c['idCours']) { ?>
+                    <img src="source/<?= $c['image'] ?>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $c['libelle'] ?></h5>
+                        <p class="card-text"><?= $c['description'] ?></p>
+                        <?php $typeTxt = getNomType($c['idType']);?>
+                        <span class='badge badge-primary'><?= $typeTxt['libelle'] ?></span>
+                    </div>
+                    <div class="row no-gutters p-2">
+                        <form action="" method="get" class="col-6 text-center">
+                            <input type="hidden" name="idCours" value="<?= $c['idCours'] ?>">
+                            <input type="hidden" name="type" value="modification">
+                            <input type="submit" value="modifier" class="btn btn-primary">
+                        </form>
+                        <form action="" method="get" class="col-6 text-center">
+                            <input type="hidden" name="idCours" value="<?= $c['idCours'] ?>">
+                            <input type="hidden" name="type" value="suppression">
+                            <input type="submit" value="supprimer" class="btn btn-danger">
+                        </form>
+                    </div>
+                <?php } else { ?>
+                    <form action="" method="post">
+                        <img src="source/<?= $c['image'] ?>" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Nom du cours</label>
+                                <input type="text" class="form-control" name="nomCours" value="<?= $c['libelle'] ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="descCours" rows="3" class="form-control">
+                                    <?= $c['description'] ?>
+                                </textarea>
+                            </div>
+                            <?php $typeTxt = getNomType($c['idType']);?>
+                            <span class='badge badge-primary'><?= $typeTxt['libelle'] ?></span>
+                        </div>
+                        <div class="row no-gutters p-2">
+                            <div class="col text-center">
+                                <input type="submit" value="Valider" class="btn btn-success">
+                            </div>
+                            <div class="col text-center">
+                                <input type="submit" value="Annuler" class="btn btn-danger">
+                            </div>
+                        </div>
                     </form>
-                    <form action="" method="get" class="col-6 text-center">
-                        <input type="hidden" name="idCours" value="<?= $c['idCours'] ?>">
-                        <input type="hidden" name="type" value="suppression">
-                        <input type="submit" value="supprimer" class="btn btn-danger">
-                    </form>
-                </div>
+                <?php } ?>
             </div>
         </div>
     <?php endforeach; ?>
