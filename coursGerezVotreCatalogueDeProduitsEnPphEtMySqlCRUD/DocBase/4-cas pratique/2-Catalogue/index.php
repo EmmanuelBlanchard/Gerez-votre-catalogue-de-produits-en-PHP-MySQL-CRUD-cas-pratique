@@ -34,7 +34,7 @@ if (isset($_GET['delete'])) {
 
 //MODIFICATION
 if(isset($_POST['type']) && $_POST['type'] === "modificationEtape2"){
-    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours']);
+    $success = modifierCoursBD($_POST['idCours'], $_POST['nomCours'], $_POST['descCours'], $_POST['idType']);
     if ($success) { ?>
         <div class="alert alert-success" role="alert">
             La modification s'est bien déroulée !
@@ -46,8 +46,8 @@ if(isset($_POST['type']) && $_POST['type'] === "modificationEtape2"){
     <?php }
 }
 
-
 $cours = getCoursBD();
+$types = getTypesBD();
 ?>
 <a href="ajout.php" class="btn btn-primary">Ajout</a>
 
@@ -87,12 +87,15 @@ $cours = getCoursBD();
                             </div>
                             <div class="form-group">
                                 <label>Description</label>
-                                <textarea name="descCours" rows="3" class="form-control">
-                                    <?= $c['description'] ?>
-                                </textarea>
+                                <textarea name="descCours" rows="3" class="form-control"><?= $c['description'] ?></textarea>
                             </div>
-                            <?php $typeTxt = getNomType($c['idType']);?>
-                            <span class='badge badge-primary'><?= $typeTxt['libelle'] ?></span>
+                            <select name="idType" class="form-control" id="">
+                                <?php foreach($types as $type){ ?>
+                                    <option value="<?= $type['idType'] ?>"
+                                        <?= ($type['idType'] === $c['idType']) ? "selected" : "" ?>
+                                        ><?= $type['libelle'] ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                         <div class="row no-gutters p-2">
                             <div class="col text-center">
