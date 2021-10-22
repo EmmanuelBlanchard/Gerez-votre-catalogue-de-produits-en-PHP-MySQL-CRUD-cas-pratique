@@ -4,24 +4,8 @@ $titre = "Un catalogue de produits"; //Mettre le nom du titre de la page que vou
 
 <!-- mettre ici le code -->
 <?php
-$dsn = 'mysql:dbname=catalogue;host=localhost';
-$user = 'root';
-$password = '';
-
-$options = array(
-    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
-);
-
-try {
-    $pdo = new PDO($dsn, $user, $password,$options);
-} catch (PDOException $e) {
-    echo 'Connexion échouée : ' . $e->getMessage();
-}
-
-$req = "SELECT * FROM cours";
-$stmt = $pdo->prepare($req);
-$stmt->execute();
-$cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+require_once("catalogue.dao.php");
+$cours = getCoursBD();
 ?>
 
 <div class="row no-gutters">
@@ -32,14 +16,7 @@ $cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card-body">
                     <h5 class="card-title"><?= $c['libelle'] ?></h5>
                     <p class="card-text"><?= $c['description'] ?></p>
-                    <?php 
-                    $req2 = "SELECT libelle FROM type WHERE idType = :idType";
-                    $stmt = $pdo->prepare($req2);
-                    $stmt->bindValue(":idType", $c['idType'],PDO::PARAM_INT);
-                    $stmt->execute();
-                    $typeTxt = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
-                    ?>
+                    <?php $typeTxt = getNomType($c['idType']);?>
                     <span class='badge badge-primary'><?= $typeTxt['libelle'] ?></span>
                 </div>
             </div>
